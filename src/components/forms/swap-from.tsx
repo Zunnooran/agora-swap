@@ -1,6 +1,16 @@
-import React, { useState } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState } from 'react';
+
+import { useTheme } from 'theme/theme-context';
 
 import Button from 'components/core-ui/button/button';
+
+import PusIconLight from 'assets/icons/plus-light.svg?react';
+import PusIcon from 'assets/icons/plus.svg?react';
+import ReloadIconLight from 'assets/icons/reload-light.svg?react';
+import ReloadIcon from 'assets/icons/reload.svg?react';
+import ShiftIconLight from 'assets/icons/shift-light.svg?react';
+import ShiftIcon from 'assets/icons/shift.svg?react';
 
 // Sample data for the dropdown
 const coins = [
@@ -9,13 +19,19 @@ const coins = [
 ];
 
 const SwapForm = () => {
+  const { theme } = useTheme();
   const [selectedCoin, setSelectedCoin] = useState(coins[0]);
   const [amount, setAmount] = useState('');
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [selectedTab, setSelectedTab] = useState(0);
 
-  const handleCoinSelect = (coin) => {
+  const handleCoinSelect = (coin: any) => {
     setSelectedCoin(coin);
     setDropdownOpen(false);
+  };
+
+  const onTabSwitch = (value: number) => {
+    setSelectedTab(value);
   };
 
   return (
@@ -24,11 +40,38 @@ const SwapForm = () => {
       <p className='text-center text-xs font-light mb-6'>across multiple Coins on Agora Dex</p>
 
       {/* Swap Form */}
-      <div className='bg-[#1C2225] rounded-xl shadow-lg p-6 space-y-4'>
-        <div>
-          <div>
-            <Button variant='text'>Swap</Button>
-            <Button variant='text'>Limit</Button>
+      <div className='dark:bg-[#1C2225] rounded-xl shadow-lg p-6 space-y-4 border dark:border-[#3D3D3D] border-[#D1D1D1]'>
+        <div className='flex items-center justify-between'>
+          <div className='flex-centered gap-2'>
+            <Button
+              variant='text'
+              onClick={() => onTabSwitch(0)}
+              className={`${selectedTab === 0 ? 'dark:text-white text-black' : 'text-[#646464]'}`}
+            >
+              Swap
+            </Button>
+            <Button
+              variant='text'
+              onClick={() => onTabSwitch(1)}
+              className={`${selectedTab === 1 ? 'dark:text-white text-black' : 'text-[#646464]'}`}
+            >
+              Limit
+            </Button>
+          </div>
+          <div className='flex-centered gap-2'>
+            {theme === 'dark' ? (
+              <>
+                <ReloadIcon />
+                <PusIcon />
+                <ShiftIcon />
+              </>
+            ) : (
+              <>
+                <ReloadIconLight />
+                <PusIconLight />
+                <ShiftIconLight />
+              </>
+            )}
           </div>
         </div>
         {/* "You Pay" Section */}
